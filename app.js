@@ -13,18 +13,26 @@ mongoose.connect('mongodb://localhost:27017/cms', {
     console.log('Mongo is connected');
 }).catch(error => console.log('COULD NOT CONNECT ' + error));
 
+
+//Static files CSS & JS
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.engine('handlebars', exphbs({defaultLayout: 'home'}));
+//use handlebars helpers
+const {select} = require('./helpers/handlebars-helpers');
+
+//Set View Engine
+app.engine('handlebars', exphbs({defaultLayout: 'home', helpers:{select: select}}));
 app.set('view engine', 'handlebars');
 
- 
-app.get('/', (req, res)=>{
-    res.render('home/index');
-});
+ //Load Routes
+const home = require('./routes/home/index');
+const admin = require('./routes/admin/index');
+const posts = require('./routes/admin/posts');
 
-
-
+//Use Routes Middleware
+app.use('/', home);
+app.use('/admin', admin);
+app.use('/admin/posts', posts);
 
 const port = process.env.PORT || 4600;
 
