@@ -8,13 +8,14 @@ const methodOverride = require('method-override');
 const upload = require ('express-fileupload');
 const session = require ('express-session');
 const flash = require ('connect-flash');
+const {mongoDbUrl} = require ('./config/database');
 
 
 
 
 app.use(upload());
 //set Mongooes
-mongoose.connect('mongodb://localhost:27017/cms', {
+mongoose.connect(mongoDbUrl, {
     useNewUrlParser: true
 }).then(db => {
     console.log('Mongo is connected');
