@@ -9,6 +9,8 @@ const upload = require ('express-fileupload');
 const session = require ('express-session');
 const flash = require ('connect-flash');
 const {mongoDbUrl} = require ('./config/database');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
 
 
@@ -49,9 +51,17 @@ app.use(session({
 
 app.use(flash());
 
+//PASSPORT
+app.use(passport.initialize());
+app.use(passport.session())
+
 // Local variables using middleware
 app.use((req, res, next)=>{
+    res.locals.user = req.user || null;
     res.locals.success_message = req.flash('success_message');
+    res.locals.error_message = req.flash('error_message');
+    res.locals.form_message = req.flash('form_message');
+    res.locals.error = req.flash('error');
     next();
 }); 
 

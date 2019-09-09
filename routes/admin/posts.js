@@ -54,7 +54,11 @@ router.post('/create', (req, res) => {
             let file = req.files.file;
             filename = Date.now() + '-' + file.name;
             file.mv('./public/uploads/' + filename, (err) => {
-                if (err) throw err;
+                if (err) {
+                    errors.push({
+                        message: 'Please add a discription'
+                    });
+                }
             });
         }
 
